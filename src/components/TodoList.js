@@ -1,13 +1,40 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
+import { connect } from 'react-redux';
+import TodoListItem from './TodoListItem';
+import { toggleTodo, setEditingTodo } from '../actions';
 
-const TodoList = props => {
+const TodoList = ({ todos, dispatchToggleTodo, dispatchSetEditingTodo }) => {
+    /*<Text key={ todo.id }>{ todo.text }</Text>)*/
     return (
         <View>
-            <Text>LISTA</Text>
+            { todos.map(todo => (
+                <TodoListItem
+                    key={ todo.id }
+                    todo={ todo }
+                    onPressTodo={ () => {
+                        dispatchToggleTodo(todo.id)
+                    } }
+                    onLongPressTodo={()=> {
+                        dispatchSetEditingTodo(todo)
+                    }}
+                />
+                
+            )) }
+                
         </View>
     )
 }
 
-export default TodoList;
+
+const mapStateToProps = state => {
+    const { todos } = state;
+    return { todos: todos };
+}
+
+export default connect(mapStateToProps,
+    {
+        dispatchToggleTodo: toggleTodo,
+        dispatchSetEditingTodo: setEditingTodo
+    })(TodoList);

@@ -1,15 +1,11 @@
-import { ADD_TODO } from '../actions'
+import { combineReducers } from 'redux';
+import todoListReducer from './todoListReducer';
+import editingTodoReducer from './editingTodoReducer';
 
-const todoListReducer = (state=[], action) => {
-    switch(action.type) {
-        case ADD_TODO:
-            const newTodo = {
-                text: action.text
-            };
+const rootReducer = combineReducers({
+    todos: todoListReducer,
+    editingTodo: editingTodoReducer
+});
 
-            return [...state, newTodo]
-        default:
-            return state;    }
-}
 
-export default todoListReducer;
+export default rootReducer;
